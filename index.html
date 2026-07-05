@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SphereTube — oglądaj, twórz, udostępniaj</title>
+<meta name="description" content="SphereTube — nowoczesny serwis streamingowy wideo.">
+<link rel="icon" type="image/png" href="https://spheretube.pages.dev/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="orb-field" aria-hidden="true"></div>
+
+<header class="site-header">
+  <a href="/" class="brand" aria-label="SphereTube — strona główna">
+    <img class="brand__logo" src="https://spheretube.pages.dev/logo.png" alt="" onerror="this.classList.add('is-broken')">
+    <span class="brand__logo-fallback" data-icon="sphere"></span>
+    <span class="brand__wordmark">Sphere<span>Tube</span></span>
+  </a>
+
+  <div class="header-search">
+    <form class="search-form" id="searchForm" role="search">
+      <label for="searchInput" class="visually-hidden">Szukaj filmów</label>
+      <input id="searchInput" type="text" name="q" placeholder="Szukaj filmów, twórców, tagów…" autocomplete="off">
+      <button type="submit" aria-label="Szukaj"><span data-icon="search"></span></button>
+    </form>
+  </div>
+
+  <div class="header-actions">
+    <button class="icon-btn search-toggle" id="searchToggleBtn" aria-label="Otwórz wyszukiwanie">
+      <span data-icon="search"></span>
+    </button>
+
+    <div class="dropdown" id="profileDropdown">
+      <button class="profile-btn" id="profileBtn" aria-haspopup="menu" aria-expanded="false" aria-label="Menu profilu">
+        <span data-icon="profile"></span>
+      </button>
+      <div class="dropdown-panel" id="profileMenu" role="menu"></div>
+    </div>
+  </div>
+</header>
+
+<main class="page-main">
+  <h1 class="section-heading" id="feedHeading">Polecane<span class="pill" id="resultsPill" hidden></span></h1>
+  <div class="video-grid" id="videoGrid" aria-live="polite"></div>
+  <div class="loading-row" id="loadingRow"><div class="spinner" role="status" aria-label="Ładowanie filmów"></div></div>
+  <div class="loading-row" id="loadMoreRow" hidden>
+    <button class="btn btn-secondary" id="loadMoreBtn">Wczytaj więcej</button>
+  </div>
+</main>
+
+<footer class="site-footer">© 2026 SphereTube — projekt startowy, niepowiązany z YouTube LLC.</footer>
+
+<!-- Wspólne menu kontekstowe "trzy kropki" — repozycjonowane przy każdym otwarciu -->
+<div class="dropdown-panel" id="videoContextMenu" role="menu" style="position:fixed;"></div>
+
+<!-- Modal udostępniania (współdzielony dla wszystkich filmów) -->
+<dialog class="share-dialog" id="shareDialog">
+  <div class="share-dialog__inner">
+    <div class="share-dialog__header">
+      <h2>Udostępnij film</h2>
+      <button class="icon-btn" id="shareCloseBtn" aria-label="Zamknij"><span data-icon="close"></span></button>
+    </div>
+    <div class="share-grid">
+      <a id="shareGmail" target="_blank" rel="noopener"><span class="platform-icon platform-icon--gmail">@</span>Gmail</a>
+      <a id="shareYoutube" target="_blank" rel="noopener"><span class="platform-icon platform-icon--youtube">▶</span>YouTube</a>
+      <a id="shareDiscord" target="_blank" rel="noopener"><span class="platform-icon platform-icon--discord">D</span>Discord</a>
+      <a id="shareX" target="_blank" rel="noopener"><span class="platform-icon platform-icon--x">X</span>X</a>
+    </div>
+    <div class="share-row">
+      <input id="shareLinkInput" type="text" readonly aria-label="Link do filmu">
+      <button id="shareCopyBtn" type="button"><span data-icon="copy"></span>Kopiuj link</button>
+    </div>
+    <div class="share-row">
+      <input id="shareEmbedInput" type="text" readonly aria-label="Kod do osadzenia">
+      <button id="shareEmbedBtn" type="button"><span data-icon="embed"></span>Osadź</button>
+    </div>
+  </div>
+</dialog>
+
+<template id="videoCardTemplate">
+  <article class="video-card">
+    <a class="video-card__thumb-wrap" href="#" data-role="thumb-link" aria-hidden="true" tabindex="-1">
+      <img data-role="thumb" alt="" loading="lazy">
+      <span class="video-card__duration" data-role="duration"></span>
+    </a>
+    <div class="video-card__body">
+      <div class="video-card__avatar" data-role="avatar" aria-hidden="true"></div>
+      <div class="video-card__info">
+        <a class="video-card__title" data-role="title-link" href="#"></a>
+        <p class="video-card__creator" data-role="creator"></p>
+        <p class="video-card__meta">
+          <span data-role="views"></span><span class="dot-sep" data-role="time"></span>
+        </p>
+      </div>
+      <button class="icon-btn video-card__menu-btn" data-role="menu-btn" aria-label="Więcej opcji" aria-haspopup="menu">
+        <span data-icon="dots"></span>
+      </button>
+    </div>
+  </article>
+</template>
+
+<script type="module" src="main.js"></script>
+</body>
+</html>
